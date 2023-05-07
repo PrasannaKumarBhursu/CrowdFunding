@@ -30,6 +30,3 @@ We welcome contributions from developers and users who want to improve the Crowd
 3. Make your changes and ensure that the tests pass.
 4. Submit a pull request to merge your changes into the main branch.
 
-## License
-
-The Crowdfunding dapp is open-source software licensed under the MIT License. Feel free to use, modify, and distribute the software under the terms of the license.
