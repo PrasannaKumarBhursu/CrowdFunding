@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { CustomButton } from "./index";
@@ -12,7 +12,12 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
-  const { connect, address } = useStateContext();
+  const { connect, address, setValue } = useStateContext();
+
+  const handleChange = useCallback((event) => {
+    const newValue = event.target.value;
+    setValue(newValue);
+  }, []);
 
   // console.log("address", address);
 
@@ -23,6 +28,7 @@ const Navbar = () => {
           type="text"
           placeholder="Search for campaign"
           className="flex w-full font-epilogue font-normal text-[14px] placeholder:text-[#4b5264] text-white bg-transparent outline-none "
+          onChange={handleChange}
         />
         <div className="w-[72px] h-full rounded-[20px] bg-[#4acd8d] flex justify-center items-center cursor-pointer">
           <img

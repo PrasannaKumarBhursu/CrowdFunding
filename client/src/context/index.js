@@ -1,10 +1,9 @@
-import React, { useContext, createContext } from "react";
+import React, { useContext, createContext, useCallback, useState } from "react";
 import {
   useAddress,
   useContract,
   useMetamask,
   useContractWrite,
-  useContractRead,
 } from "@thirdweb-dev/react";
 
 import { ethers } from "ethers";
@@ -23,13 +22,10 @@ export const StateContextProvider = ({ children }) => {
     "createCampaign"
   );
 
-  const { mutateAsync: donateToCampaign } = useContractWrite(
-    contract,
-    "donateToCampaign"
-  );
-
   const address = useAddress();
   const connect = useMetamask();
+
+  const [value, setValue] = useState("");
 
   const publishCampaign = async (form) => {
     console.log("context", form);
@@ -52,11 +48,13 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
-  const getCampaigns = async () => {
+  const getCampaigns = async (value) => {
     const notFilterdCampaigns = await contract.call("getCampaigns");
 
     const campaigns = notFilterdCampaigns.filter(
-      (campaign) => daysLeft(campaign.deadline.toNumber()) > 0
+      (campaign) =>
+        campaign.title.toLowerCase().includes(value) &&
+        daysLeft(campaign.deadline.toNumber()) > 0
     );
 
     const parsedCampaigns = campaigns.map((campaign, i) => ({
@@ -121,6 +119,8 @@ export const StateContextProvider = ({ children }) => {
         getUserCampaigns,
         donate,
         getDonations,
+        value,
+        setValue,
       }}
     >
       {children}
